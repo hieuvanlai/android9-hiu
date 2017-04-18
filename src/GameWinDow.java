@@ -1,4 +1,4 @@
-import com.sun.javafx.iio.ImageMetadata;
+import utils.Utils;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -9,7 +9,6 @@ import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * Created by hieuv on 4/10/2017.
