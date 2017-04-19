@@ -1,3 +1,6 @@
+import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
+import enemies.EnemyBullet;
+import enemies.EnemyController;
 import utils.Utils;
 
 import javax.imageio.ImageIO;
@@ -9,6 +12,8 @@ import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by hieuv on 4/10/2017.
@@ -18,12 +23,17 @@ public class GameWinDow  extends Frame {
 
     BufferedImage backBufferedImage ;
     Graphics backbufferGraphics;
-
+    EnemyController enemyController;
+    int shortdelayenemy = 120;
     int sizeMapX = 600;
     int sizeMapY = 800;
-    Enemy enemy = new Enemy(Utils.loadImage("res/enemy_plane_white_3.png"),sizeMapX,sizeMapY);
+    int shotdelay = 10;
+    ArrayList<EnemyController> enemyControllerlist;
     Plane plane = new Plane(sizeMapX/2,sizeMapY-100,Utils.loadImage("res/plane2.png"),sizeMapX,sizeMapY);
     Inputmaneger inputmaneger= new Inputmaneger();
+    ArrayList<EnemyBullet> enemyBulletslist;
+    EnemyBullet enemyBullet;
+    ArrayList<Bullet> bullets;
 
 
     //
@@ -31,10 +41,36 @@ public class GameWinDow  extends Frame {
 
 
 
+    public void taoenemy(){
+        for (int i = 0; i<3; i++){
+            Random  random = new Random();
+            int j = random.nextInt(3) + 1;
 
+            if (j==1){
+                enemyController = new EnemyController(Utils.loadImage("res/enemy-green-3.png"),sizeMapX,sizeMapY);
+                enemyController.setMoveBeHavior(j);
+
+            }else {
+                if (j==2){
+                    enemyController = new EnemyController(Utils.loadImage("res/enemy_plane_white_1.png"),sizeMapX,sizeMapY);
+                    enemyController.setMoveBeHavior(j);
+                }else {
+                    enemyController = new EnemyController(Utils.loadImage("res/enemy_plane_yellow_1.png"),sizeMapX,sizeMapY);
+                    enemyController.setMoveBeHavior(3);
+                }
+            }
+
+
+            enemyControllerlist.add(enemyController);
+
+        }
+    }
 
     public GameWinDow() throws IOException {
-
+        bullets = new ArrayList<>();
+        enemyBulletslist = new ArrayList<>();
+        enemyControllerlist = new ArrayList<>();
+        taoenemy();
         setVisible(true);
         setSize(sizeMapX,sizeMapY);
         backBufferedImage = new BufferedImage(sizeMapX,sizeMapY,BufferedImage.TYPE_INT_ARGB);
@@ -116,13 +152,87 @@ public class GameWinDow  extends Frame {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+                    for (Bullet bullet1:bullets){
 
-                    enemy.Shot();
-                    enemy.update();
+                        for (int i = 0;i<enemyControllerlist.size();i++){
+                            int kiemttra=0;
+                            for (int j =0 ;j<50;j++){
+                                if ((bullet1.getX()==enemyControllerlist.get(i).getGameRect().getX()+j)){
+                                    for (int z=0;z<20;z++){
+                                        if (enemyControllerlist.get(i).getGameRect().getY()+z==bullet1.getY()){
+                                            System.out.println("trúng cmnrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
+                                        }
+                                    }
+
+                                }
+
+
+
+
+
+                            }
+                            if (kiemttra==1){
+
+                            }
+
+
+
+
+
+
+                        }
+                        bullet1.updateup();
+
+                    }
+
+
+
+                    shortdelayenemy--;
+                    if (shortdelayenemy==1){
+                        for (EnemyController enemyController:enemyControllerlist){
+
+
+                            enemyBullet = new EnemyBullet(enemyController.getGameRect().getX(),enemyController.getGameRect().getY(),Utils.loadImage("res/bullet-round.png"));
+                            enemyBulletslist.add(enemyBullet);
+
+                        }
+                        shortdelayenemy=120;
+                    }
+                    int kiemtraem=0;
+
+                    for (EnemyController enemyController:enemyControllerlist){
+
+                        enemyController.update();
+                        if (enemyController.getGameRect().getY()==sizeMapY){
+                            kiemtraem=1;
+                        }
+
+
+                    }
+                    if (kiemtraem==1){
+                        taoenemy();
+                    }
+                    for (EnemyBullet enemyBullet: enemyBulletslist){
+                        enemyBullet.updatedown();
+                    }
 
                     plane.move(inputmaneger);
-                    plane.Shot(inputmaneger);
+
+                    shotdelay--;
+                    if (shotdelay==0){
+                        if (inputmaneger.isENTERPressed){
+                            Bullet bul = null;
+                            try {
+                                bul = new Bullet(plane.getGameRect().getX()+30,plane.getGameRect().getY(), ImageIO.read(new File("res/bullet.png")));
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            bullets.add(bul);
+                        }
+                        shotdelay=10;
+                    }
                     plane.update();
+
                     repaint();
 
                 }
@@ -137,7 +247,15 @@ public class GameWinDow  extends Frame {
     public void update(Graphics g) {
         backbufferGraphics.drawImage(backgroundImage,0,0,sizeMapX,sizeMapY,null);
         plane.draw(backbufferGraphics);
-        enemy.draw(backbufferGraphics);
+        for (EnemyController enemyController : enemyControllerlist){
+            enemyController.draw(backbufferGraphics);
+        }
+        for (EnemyBullet enemyBullet: enemyBulletslist){
+            enemyBullet.draw(backbufferGraphics);
+        }
+        for (Bullet b: bullets){
+            b.draw(backbufferGraphics);
+        }
 
         g.drawImage(backBufferedImage,0,0,null);
     }

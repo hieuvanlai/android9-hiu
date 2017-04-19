@@ -1,6 +1,7 @@
 package enemies;
 
 import View.ImageRenderer;
+import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import models.GameRect;
 
 import javax.imageio.ImageIO;
@@ -8,7 +9,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-
+import java.util.Random;
 
 
 /**
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 public class EnemyController {
     private GameRect gameRect;
     private ImageRenderer imageRenderer;
+    private MoveBeHavior moveBeHavior;
 
 
     private int sizeMapX;
@@ -25,13 +27,23 @@ public class EnemyController {
     private boolean move;
     private int shotleft;
 
-    private ArrayList<EnemyBullet> bullets;
-    private int shotdelay;
 
-    public EnemyController( Image image, int sizeMapX, int sizeMapY) {
+    private int shotdelay;
+    private int x;
+    public void setMoveBeHavior(int x) {
+        this.x=x;
+    }
+
+    public GameRect getGameRect() {
+        return gameRect;
+    }
+
+    public EnemyController(Image image, int sizeMapX, int sizeMapY) {
+        moveBeHavior = new MoveBeHavior();
         move = true;
-        bullets =new ArrayList<>();
-        gameRect = new GameRect(0,50,50,50);
+
+        Random random = new Random();
+        gameRect = new GameRect(random.nextInt(sizeMapX),50,50,50);
 
         imageRenderer = new ImageRenderer(image);
         this.sizeMapX = sizeMapX;
@@ -40,63 +52,31 @@ public class EnemyController {
         shotleft=1;
     }
     public void update(){
-        if (move){
-            gameRect.setX(gameRect.getX()+1);
-            if (gameRect.getX()==sizeMapX-32){
-                move=false;
-            }
-
-        }else{
-            gameRect.setX(gameRect.getX()-1);
-            if (gameRect.getX()<10){
-                move=true;
-            }
+        if (x==1){
+            moveBeHavior.move(gameRect);
+        }
+        if (x==2){
+            moveBeHavior.moveleft(gameRect);
+        }
+        if (x==3){
+            moveBeHavior.moveright(gameRect);
+        }
+        if (gameRect.getX()==sizeMapX){
+            this.x=2;
+        }
+        if (gameRect.getX()==0){
+            this.x=3;
         }
 
-        for (EnemyBullet bullet1:bullets){
-            bullet1.updatedown();
-        }
+//
 
     }
 
     public void  draw(Graphics graphics){
         imageRenderer.render(graphics,gameRect);
-        for (EnemyBullet b: bullets){
-            b.draw(graphics);
-        }
+//
     }
 
-    public void Shot(){
-        shotdelay--;
 
-        if (shotdelay==0){
-            shotleft++;
-
-
-            EnemyBullet bul = null;
-            if (shotleft%2==0){
-
-                try {
-                    bul = new EnemyBullet((gameRect.getX()),gameRect.getY(), ImageIO.read(new File("res/bullet-round.png")));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }else {
-                try {
-                    bul = new EnemyBullet((gameRect.getX()+30),gameRect.getY(), ImageIO.read(new File("res/bullet-round.png")));
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-
-            bullets.add(bul);
-
-            shotdelay=30;
-        }
-
-
-    }
 
 }

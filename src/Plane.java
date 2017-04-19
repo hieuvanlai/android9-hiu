@@ -18,8 +18,9 @@ import java.util.ArrayList;
     private int sizeMapX;
     private int sizeMapY;
 
-    ArrayList<Bullet> bullets;
-
+    public GameRect getGameRect() {
+        return gameRect;
+    }
 
     int dy;
     int dx;
@@ -30,7 +31,7 @@ import java.util.ArrayList;
         imageReader = new ImageRenderer(image);
         this.sizeMapX= sizeMapX;
         this.sizeMapY= sizeMapY;
-        bullets = new ArrayList<>();
+
         shotdelay=10;
 
     }
@@ -46,19 +47,7 @@ import java.util.ArrayList;
 
     }
     public void Shot(Inputmaneger inputmaneger){
-        shotdelay--;
-        if (shotdelay==0){
-            if (inputmaneger.isENTERPressed){
-                Bullet bul = null;
-                try {
-                    bul = new Bullet(gameRect.getX()+30,gameRect.getY(), ImageIO.read(new File("res/bullet.png")));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                bullets.add(bul);
-            }
-            shotdelay=10;
-        }
+
 
 
     }
@@ -71,16 +60,11 @@ import java.util.ArrayList;
 
     public void  draw(Graphics graphics){
         graphics.drawImage(imageReader.getImage(),gameRect.getX(),gameRect.getY(),null);
-        for (Bullet b: bullets){
-            b.draw(graphics);
-        }
+
     }
 
     public  void update(){
        gameRect.move(dx,dy);
-        for (Bullet bullet1:bullets){
-            bullet1.updateup();
-        }
 
     }
 

@@ -46,6 +46,6 @@ public class EnemyBullet {
         this.y-=15;
     }
     public  void updatedown(){
-        this.y+=10;
+        this.y+=5;
     }
 }
