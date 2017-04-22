@@ -38,7 +38,29 @@ public class GameWinDow  extends Frame {
 
     //
 
+    public  void  deleteenemy(){
+        for (int x = 0;x<bullets.size();x++){
 
+            for (int i = 0;i<enemyControllerlist.size();i++){
+                int kiemttra=0;
+                for (int j =0 ;j<50;j++){
+                    if ((bullets.get(x).getX()==enemyControllerlist.get(i).getGameRect().getX()+j)){
+                        for (int z=0;z<20;z++){
+                            if (enemyControllerlist.get(i).getGameRect().getY()+z==bullets.get(x).getY()){
+                                enemyControllerlist.remove(i);
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+                if (kiemttra==1){
+                }
+            }
+            bullets.get(x).updateup();
+        }
+
+    }
 
 
     public void taoenemy(){
@@ -71,6 +93,7 @@ public class GameWinDow  extends Frame {
         enemyBulletslist = new ArrayList<>();
         enemyControllerlist = new ArrayList<>();
         taoenemy();
+
         setVisible(true);
         setSize(sizeMapX,sizeMapY);
         backBufferedImage = new BufferedImage(sizeMapX,sizeMapY,BufferedImage.TYPE_INT_ARGB);
@@ -152,38 +175,8 @@ public class GameWinDow  extends Frame {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    for (Bullet bullet1:bullets){
+                    deleteenemy();
 
-                        for (int i = 0;i<enemyControllerlist.size();i++){
-                            int kiemttra=0;
-                            for (int j =0 ;j<50;j++){
-                                if ((bullet1.getX()==enemyControllerlist.get(i).getGameRect().getX()+j)){
-                                    for (int z=0;z<20;z++){
-                                        if (enemyControllerlist.get(i).getGameRect().getY()+z==bullet1.getY()){
-                                            System.out.println("trúng cmnrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
-                                        }
-                                    }
-
-                                }
-
-
-
-
-
-                            }
-                            if (kiemttra==1){
-
-                            }
-
-
-
-
-
-
-                        }
-                        bullet1.updateup();
-
-                    }
 
 
 
@@ -210,6 +203,9 @@ public class GameWinDow  extends Frame {
 
                     }
                     if (kiemtraem==1){
+                        taoenemy();
+                    }
+                    if (enemyControllerlist.size()==0){
                         taoenemy();
                     }
                     for (EnemyBullet enemyBullet: enemyBulletslist){
