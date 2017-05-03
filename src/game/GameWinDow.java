@@ -197,7 +197,7 @@ public class GameWinDow  extends Frame {
                         taoenemy();
                     }
                     for (EnemyBullet enemyBullet: enemyBulletslist){
-                        enemyBullet.updatedown();
+                        enemyBullet.update();
                     }
 
                     plane.move(inputmaneger);
@@ -246,19 +246,35 @@ public class GameWinDow  extends Frame {
             EnemyController enemyController = enemyControllerIterator.next();
             if (enemyController.getGameRect().isDead()){
                 enemyControllerIterator.remove();
+                CollisionManager.instance.remove(enemyController);
 
             }
 
         }
-//        Iterator<BulletController> bulletControllerIterator = bullets.iterator();
-//        while (bulletControllerIterator.hasNext()){
-//            BulletController bulet = bulletControllerIterator.next();
-//            if (bulet.getGameRect().isDead()){
-//                bulletControllerIterator.remove();
-//                System.out.println("đitit");
-//            }
-//
-//        }
+        Iterator<BulletController> bulletControllerIterator = bullets.iterator();
+        while (bulletControllerIterator.hasNext()){
+            BulletController bulet = bulletControllerIterator.next();
+            if (bulet.getGameRect().isDead()){
+                bulletControllerIterator.remove();
+                CollisionManager.instance.remove(bulet);
+            }
+
+        }
+        Iterator<EnemyBullet> enemyBulletIterator = enemyBulletslist.iterator();
+        while (enemyBulletIterator.hasNext()){
+            EnemyBullet enemyBullet = enemyBulletIterator.next();
+            if (enemyBullet.getGameRect().isDead()){
+                enemyBulletIterator.remove();
+                CollisionManager.instance.remove(enemyBullet);
+
+            }
+        }
+
+
+
+        if (plane.getGameRect().isDead()){
+            System.out.println("dieeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+        }
 
         g.drawImage(backBufferedImage,0,0,null);
     }

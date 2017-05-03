@@ -29,11 +29,9 @@ public class BulletController  extends Controller implements Collider
 
 
 
+
     public  void updateup(){
         gameRect.move(0,-15);
-    }
-    public  void updatedown(){
-        gameRect.move(0,+10);
     }
 
 

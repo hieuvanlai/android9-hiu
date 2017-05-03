@@ -42,7 +42,7 @@ public class EnemyController extends Controller implements Collider {
         this.sizeMapX = sizeMapX;
         this.sizeMapY = sizeMapY;
         CollisionManager.instance.add(this);
-        getGameRect().setHit(8);
+        getGameRect().setHit(3);
 
 
     }

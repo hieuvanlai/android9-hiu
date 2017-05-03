@@ -1,5 +1,7 @@
 package game;
 
+import Controllers.CollisionManager;
+import Controllers.Controller;
 import View.ImageRenderer;
 import models.GameRect;
 
@@ -14,9 +16,8 @@ import java.util.ArrayList;
 /**
  * Created by hieuv on 4/12/2017.
  */
- public class Plane  {
-    private GameRect gameRect;
-    private ImageRenderer imageReader;
+ public class Plane extends Controller implements Collider{
+
     private int sizeMapX;
     private int sizeMapY;
 
@@ -24,16 +25,32 @@ import java.util.ArrayList;
         return gameRect;
     }
 
+    @Override
+    public void onCollider(Collider other) {
+
+    }
+    public void  GetHit(int damage){
+        gameRect.setHit(getGameRect().getHit()-damage);
+        System.out.println(getGameRect().getHit());
+        if (getGameRect().getHit()<=0){
+
+            getGameRect().setDead(true);
+        }
+
+    }
+
     int dy;
     int dx;
     int shotdelay;
 
     public Plane(int x, int y, Image image,int sizeMapX,int sizeMapY) {
-        gameRect = new GameRect(x,y,70,70);
-        imageReader = new ImageRenderer(image);
+
         this.sizeMapX= sizeMapX;
         this.sizeMapY= sizeMapY;
-
+        this.gameRect= new GameRect(x,y,70,70);
+        this.imageRenderer = new ImageRenderer(image);
+        gameRect.setHit(20);
+        CollisionManager.instance.add(this);
         shotdelay=10;
 
     }
@@ -56,10 +73,6 @@ import java.util.ArrayList;
 
 
 
-    public void  draw(Graphics graphics){
-        graphics.drawImage(imageReader.getImage(),gameRect.getX(),gameRect.getY(),null);
-
-    }
 
     public  void update(){
        gameRect.move(dx,dy);
