@@ -1,3 +1,7 @@
+package game;
+
+import game.GameWinDow;
+
 import java.io.IOException;
 
 /**

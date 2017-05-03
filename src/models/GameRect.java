@@ -1,5 +1,7 @@
 package models;
 
+import java.awt.*;
+
 /**
  * Created by hieuv on 4/15/2017.
  */
@@ -8,6 +10,30 @@ public class GameRect {
     private  int y;
     private int width;
     private  int height;
+    private int Hit;
+
+    public int getHit() {
+        return Hit;
+    }
+
+    public void setHit(int hit) {
+        Hit = hit;
+    }
+
+    private boolean isDead;
+
+    public boolean isDead() {
+        return isDead;
+    }
+
+    public GameRect(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public void setDead(boolean dead) {
+        isDead = dead;
+    }
 
     public GameRect(int x, int y, int width, int height) {
         this.x = x;
@@ -43,5 +69,14 @@ public class GameRect {
     public  void move (int dx ,int dy){
         this.x += dx;
         this.y +=dy;
+    }
+
+
+
+    public boolean intersects(GameRect other){
+        Rectangle rect1 = new Rectangle(x,y,width,height);
+        Rectangle rect2 = new Rectangle(other.x,other.y,other.width,other.height);
+        return rect1.intersects(rect2);
+
     }
 }

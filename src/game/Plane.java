@@ -1,3 +1,5 @@
+package game;
+
 import View.ImageRenderer;
 import models.GameRect;
 
@@ -12,7 +14,7 @@ import java.util.ArrayList;
 /**
  * Created by hieuv on 4/12/2017.
  */
- public class Plane {
+ public class Plane  {
     private GameRect gameRect;
     private ImageRenderer imageReader;
     private int sizeMapX;
@@ -46,11 +48,7 @@ import java.util.ArrayList;
 
 
     }
-    public void Shot(Inputmaneger inputmaneger){
 
-
-
-    }
 
 
 

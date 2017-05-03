@@ -1,6 +1,10 @@
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
+package game;
+
+import Controllers.CollisionManager;
+import Controllers.Controller;
 import enemies.EnemyBullet;
 import enemies.EnemyController;
+import game.BulletController;
 import utils.Utils;
 
 import javax.imageio.ImageIO;
@@ -13,6 +17,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 /**
@@ -33,34 +38,12 @@ public class GameWinDow  extends Frame {
     Inputmaneger inputmaneger= new Inputmaneger();
     ArrayList<EnemyBullet> enemyBulletslist;
     EnemyBullet enemyBullet;
-    ArrayList<Bullet> bullets;
+    ArrayList<BulletController> bullets;
+
 
 
     //
 
-    public  void  deleteenemy(){
-        for (int x = 0;x<bullets.size();x++){
-
-            for (int i = 0;i<enemyControllerlist.size();i++){
-                int kiemttra=0;
-                for (int j =0 ;j<50;j++){
-                    if ((bullets.get(x).getX()==enemyControllerlist.get(i).getGameRect().getX()+j)){
-                        for (int z=0;z<20;z++){
-                            if (enemyControllerlist.get(i).getGameRect().getY()+z==bullets.get(x).getY()){
-                                enemyControllerlist.remove(i);
-                                break;
-                            }
-                        }
-                        break;
-                    }
-                }
-                if (kiemttra==1){
-                }
-            }
-            bullets.get(x).updateup();
-        }
-
-    }
 
 
     public void taoenemy(){
@@ -71,6 +54,7 @@ public class GameWinDow  extends Frame {
             if (j==1){
                 enemyController = new EnemyController(Utils.loadImage("res/enemy-green-3.png"),sizeMapX,sizeMapY);
                 enemyController.setMoveBeHavior(j);
+
 
             }else {
                 if (j==2){
@@ -84,6 +68,8 @@ public class GameWinDow  extends Frame {
 
 
             enemyControllerlist.add(enemyController);
+
+
 
         }
     }
@@ -175,8 +161,10 @@ public class GameWinDow  extends Frame {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    deleteenemy();
 
+                    for (BulletController bulletController : bullets){
+                        bulletController.updateup();
+                    }
 
 
 
@@ -217,9 +205,9 @@ public class GameWinDow  extends Frame {
                     shotdelay--;
                     if (shotdelay==0){
                         if (inputmaneger.isENTERPressed){
-                            Bullet bul = null;
+                            BulletController bul = null;
                             try {
-                                bul = new Bullet(plane.getGameRect().getX()+30,plane.getGameRect().getY(), ImageIO.read(new File("res/bullet.png")));
+                                bul = new BulletController(plane.getGameRect().getX()+30,plane.getGameRect().getY(), ImageIO.read(new File("res/bullet.png")));
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -229,6 +217,7 @@ public class GameWinDow  extends Frame {
                     }
                     plane.update();
 
+                    CollisionManager.instance.update();
                     repaint();
 
                 }
@@ -249,9 +238,27 @@ public class GameWinDow  extends Frame {
         for (EnemyBullet enemyBullet: enemyBulletslist){
             enemyBullet.draw(backbufferGraphics);
         }
-        for (Bullet b: bullets){
+        for (BulletController b: bullets){
             b.draw(backbufferGraphics);
         }
+        Iterator<EnemyController> enemyControllerIterator = enemyControllerlist.iterator();
+        while (enemyControllerIterator.hasNext()){
+            EnemyController enemyController = enemyControllerIterator.next();
+            if (enemyController.getGameRect().isDead()){
+                enemyControllerIterator.remove();
+
+            }
+
+        }
+//        Iterator<BulletController> bulletControllerIterator = bullets.iterator();
+//        while (bulletControllerIterator.hasNext()){
+//            BulletController bulet = bulletControllerIterator.next();
+//            if (bulet.getGameRect().isDead()){
+//                bulletControllerIterator.remove();
+//                System.out.println("đitit");
+//            }
+//
+//        }
 
         g.drawImage(backBufferedImage,0,0,null);
     }

@@ -1,8 +1,12 @@
 package enemies;
 
+import Controllers.CollisionManager;
+import Controllers.Controller;
 import View.ImageRenderer;
 import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
+import game.Collider;
 import models.GameRect;
+import utils.Utils;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -15,41 +19,32 @@ import java.util.Random;
 /**
  * Created by hieuv on 4/15/2017.
  */
-public class EnemyController {
-    private GameRect gameRect;
-    private ImageRenderer imageRenderer;
-    private MoveBeHavior moveBeHavior;
+public class EnemyController extends Controller implements Collider {
+
+    private MoveBeHavior moveBeHavior = new MoveBeHavior();
 
 
     private int sizeMapX;
     private int sizeMapY;
-    private  int kiemtrax;
-    private boolean move;
-    private int shotleft;
 
 
-    private int shotdelay;
-    private int x;
+
+    private int x = 1;
     public void setMoveBeHavior(int x) {
         this.x=x;
     }
 
-    public GameRect getGameRect() {
-        return gameRect;
-    }
+
 
     public EnemyController(Image image, int sizeMapX, int sizeMapY) {
-        moveBeHavior = new MoveBeHavior();
-        move = true;
 
-        Random random = new Random();
-        gameRect = new GameRect(random.nextInt(sizeMapX),50,50,50);
-
-        imageRenderer = new ImageRenderer(image);
+        super(new GameRect(Utils.random.nextInt(sizeMapX),50,50,50), new ImageRenderer(image));
         this.sizeMapX = sizeMapX;
         this.sizeMapY = sizeMapY;
-        shotdelay=30;
-        shotleft=1;
+        CollisionManager.instance.add(this);
+        getGameRect().setHit(8);
+
+
     }
     public void update(){
         if (x==1){
@@ -72,11 +67,18 @@ public class EnemyController {
 
     }
 
-    public void  draw(Graphics graphics){
-        imageRenderer.render(graphics,gameRect);
-//
+
+    @Override
+    public void onCollider(Collider other) {
+
+
     }
 
+    public void  GetHit(int damage){
+      gameRect.setHit(getGameRect().getHit()-damage);
+        if (getGameRect().getHit()<=0){
+            getGameRect().setDead(true);
+        }
 
-
+    }
 }
