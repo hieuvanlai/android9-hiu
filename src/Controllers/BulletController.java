@@ -1,9 +1,10 @@
-package game;
+package Controllers;
 
 import Controllers.CollisionManager;
 import Controllers.Controller;
 import View.ImageRenderer;
 import enemies.EnemyController;
+import game.Collider;
 import models.GameRect;
 
 import java.awt.*;
@@ -25,12 +26,15 @@ public class BulletController  extends Controller implements Collider
         CollisionManager.instance.add(this);
 
     }
+    @Override
+    public void Shot(){
+    }
 
 
 
 
 
-    public  void updateup(){
+    public  void update(){
         gameRect.move(0,-15);
     }
 

@@ -27,10 +27,12 @@ public class Controller {
 
 
     public void draw(Graphics graphics){
-
         imageRenderer.render(graphics,gameRect);
     }
     public void  update(){
+
+    }
+    public void Shot(){
 
     }
 }

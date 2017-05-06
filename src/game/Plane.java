@@ -1,9 +1,13 @@
 package game;
 
+import Controllers.BulletController;
 import Controllers.CollisionManager;
 import Controllers.Controller;
+import Controllers.ControllerManager;
 import View.ImageRenderer;
+import enemies.EnemyBullet;
 import models.GameRect;
+import utils.Utils;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
@@ -65,16 +69,22 @@ import java.util.ArrayList;
 
 
     }
+    public  void  Shot(){
+        if (shotdelay==1){
+
+            BulletController enemyBullet = new BulletController(getGameRect().getX()+40,getGameRect().getY(), Utils.loadImage("res/bullet.png"));
+            ControllerManager.instance.add(enemyBullet);
+            shotdelay=10;
 
 
+        }
 
-
-
-
+    }
 
 
 
     public  void update(){
+        shotdelay--;
        gameRect.move(dx,dy);
 
     }

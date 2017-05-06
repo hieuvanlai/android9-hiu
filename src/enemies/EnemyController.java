@@ -1,7 +1,9 @@
 package enemies;
 
+import Controllers.BulletController;
 import Controllers.CollisionManager;
 import Controllers.Controller;
+import Controllers.ControllerManager;
 import View.ImageRenderer;
 import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import game.Collider;
@@ -26,6 +28,7 @@ public class EnemyController extends Controller implements Collider {
 
     private int sizeMapX;
     private int sizeMapY;
+    private int shotdelay;
 
 
 
@@ -43,6 +46,7 @@ public class EnemyController extends Controller implements Collider {
         this.sizeMapY = sizeMapY;
         CollisionManager.instance.add(this);
         getGameRect().setHit(3);
+        shotdelay = 30;
 
 
     }
@@ -62,9 +66,9 @@ public class EnemyController extends Controller implements Collider {
         if (gameRect.getX()==0){
             this.x=3;
         }
+        shotdelay--;
 
 //
-
     }
 
 
@@ -80,5 +84,9 @@ public class EnemyController extends Controller implements Collider {
             getGameRect().setDead(true);
         }
 
+    }
+    @Override
+    public  void  Shot(){
+//        EnemyBullet enemyBullet = new EnemyBullet(getGameRect().getX(),gameRect.getY(),Utils.loadImage("res/bullet.png"));
     }
 }
