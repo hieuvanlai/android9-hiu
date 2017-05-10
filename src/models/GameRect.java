@@ -26,10 +26,7 @@ public class GameRect {
         return isDead;
     }
 
-    public GameRect(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
+
 
     public void setDead(boolean dead) {
         isDead = dead;

@@ -3,6 +3,7 @@ package Controllers;
 import View.ImageRenderer;
 import models.GameRect;
 
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.awt.*;
 import java.util.Random;
 
@@ -32,7 +33,7 @@ public class Controller {
     public void  update(){
 
     }
-    public void Shot(){
+    public void Shot() throws UnsupportedAudioFileException {
 
     }
 }

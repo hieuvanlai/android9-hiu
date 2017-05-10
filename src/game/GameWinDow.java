@@ -2,26 +2,17 @@ package game;
 
 import Controllers.CollisionManager;
 import Controllers.ControllerManager;
-import enemies.EnemyBullet;
-import enemies.EnemyController;
-import Controllers.BulletController;
-import scenes.GameScene;
-import scenes.Level1Since;
-import scenes.MenuScene;
-import scenes.Startscene;
-import utils.Utils;
 
-import javax.imageio.ImageIO;
+import scenes.GameScene;
+
+import scenes.Startscene;
+
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
+
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Random;
+
 
 /**
  * Created by hieuv on 4/10/2017.
@@ -97,6 +88,19 @@ public class GameWinDow  extends Frame {
 
             }
         });
+        addMouseMotionListener(new MouseMotionListener() {
+            @Override
+            public void mouseDragged(MouseEvent mouseEvent) {
+
+            }
+
+            @Override
+            public void mouseMoved(MouseEvent mouseEvent) {
+
+            }
+
+
+        });
         addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent keyEvent) {
@@ -137,8 +141,6 @@ public class GameWinDow  extends Frame {
 
                     ControllerManager.instance.update();
                     ControllerManager.instance.Shot();
-
-
 
 
 

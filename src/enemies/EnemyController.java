@@ -1,9 +1,7 @@
 package enemies;
 
-import Controllers.BulletController;
-import Controllers.CollisionManager;
-import Controllers.Controller;
-import Controllers.ControllerManager;
+import Controllers.*;
+import View.Animation;
 import View.ImageRenderer;
 import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import game.Collider;
@@ -11,6 +9,7 @@ import models.GameRect;
 import utils.Utils;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -28,29 +27,43 @@ public class EnemyController extends Controller implements Collider {
 
     private int sizeMapX;
     private int sizeMapY;
-    private int shotdelay;
+    private int shotdelay =0;
+    public boolean isPlanelever = false;
 
 
 
     private int x = 1;
+    private Animation animation;
+    ArrayList<Image> images;
+
     public void setMoveBeHavior(int x) {
         this.x=x;
     }
 
 
 
-    public EnemyController(Image image, int sizeMapX, int sizeMapY) {
+    public EnemyController( int sizeMapX, int sizeMapY,ArrayList<Image> images) {
+//        imageRenderer = new ImageRenderer("res/enemy_plane_white_1.png");
 
-        super(new GameRect(Utils.random.nextInt(sizeMapX),50,50,50), new ImageRenderer(image));
+        gameRect= new GameRect(Utils.random.nextInt(sizeMapX),50,50,50);
         this.sizeMapX = sizeMapX;
         this.sizeMapY = sizeMapY;
         CollisionManager.instance.add(this);
         getGameRect().setHit(3);
-        shotdelay = 30;
+        shotdelay = 50;
+        animation = new Animation(images);
+
 
 
     }
+    @Override
+    public void draw(Graphics graphics){
+        animation.draw(graphics,gameRect);
+
+    }
     public void update(){
+        shotdelay--;
+
         if (x==1){
             moveBeHavior.move(gameRect);
         }
@@ -66,7 +79,7 @@ public class EnemyController extends Controller implements Collider {
         if (gameRect.getX()==0){
             this.x=3;
         }
-        shotdelay--;
+
 
 //
     }
@@ -82,11 +95,33 @@ public class EnemyController extends Controller implements Collider {
       gameRect.setHit(getGameRect().getHit()-damage);
         if (getGameRect().getHit()<=0){
             getGameRect().setDead(true);
+            GameRect  rect = new GameRect(getGameRect().getX(),getGameRect().getY(),0,0);
+            try {
+                Utils.playSound("res/Explosion12.wav",false);
+            } catch (UnsupportedAudioFileException e) {
+                e.printStackTrace();
+            }
+            if (isPlanelever) {
+                PlaneLeverControler planeLeverControler = new PlaneLeverControler(rect.getX(),rect.getY(),Utils.loadImage("res/PlaneLV.png"));
+                ControllerManager.instance.add(planeLeverControler);
+
+
+            }
+            ExplosionController explosionController = new ExplosionController(rect);
+            ControllerManager.instance.add(explosionController);
+
         }
 
     }
     @Override
     public  void  Shot(){
-//        EnemyBullet enemyBullet = new EnemyBullet(getGameRect().getX(),gameRect.getY(),Utils.loadImage("res/bullet.png"));
+
+        if (shotdelay==1){
+            EnemyBullet enemyBullet = new EnemyBullet(getGameRect().getX(),gameRect.getY(),Utils.loadImage("res/bullet-round.png"));
+            ControllerManager.instance.addbuletenymi(enemyBullet);
+            shotdelay=50;
+        }
+
+
     }
 }

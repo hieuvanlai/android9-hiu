@@ -1,9 +1,7 @@
-package enemies;
+package Controllers;
 
-import Controllers.CollisionManager;
-import Controllers.Controller;
-import Controllers.ControllerManager;
 import View.ImageRenderer;
+import enemies.MoveBeHavior;
 import game.Collider;
 import game.Plane;
 import models.GameRect;
@@ -11,13 +9,12 @@ import models.GameRect;
 import java.awt.*;
 
 /**
- * Created by hieuv on 4/15/2017.
+ * Created by hieuv on 5/8/2017.
  */
-public class EnemyBullet extends Controller implements Collider {
-    private  int damege =1;
+public class PlaneLeverControler extends Controller implements Collider {
+    MoveBeHavior moveBeHavior = new MoveBeHavior();
 
-
-    public EnemyBullet(int x, int y, Image image) {
+    public PlaneLeverControler(int x, int y, Image image) {
         int rectX = x- image.getWidth(null)/2;
         int rectY = y- image.getHeight(null);
         this.gameRect= new GameRect(rectX,rectY,image.getWidth(null),image.getHeight(null));
@@ -25,27 +22,22 @@ public class EnemyBullet extends Controller implements Collider {
         CollisionManager.instance.add(this);
 
     }
+    @Override
+    public void update(){
+        moveBeHavior.movebackgroud(gameRect);
 
-
-
-
-
-    public  void update(){
-            gameRect.move(0,+5);
     }
+
+
 
     @Override
     public void onCollider(Collider other) {
 
         if (other instanceof Plane){
-            ((Plane)other).GetHit(damege);
+            System.out.println("dkmfhkk");
+
             getGameRect().setDead(true);
-
-
+            ((Plane)other).GetLever();
         }
     }
-    @Override
-    public void Shot(){
-    }
-
 }

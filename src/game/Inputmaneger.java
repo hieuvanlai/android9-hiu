@@ -1,6 +1,7 @@
 package game;
 
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseMotionListener;
 
 /**
  * Created by hieuv on 4/14/2017.
@@ -11,6 +12,7 @@ public class Inputmaneger {
     boolean isWPressed;
     boolean isSPressed;
     boolean isENTERPressed;
+    int raditor;
     public void  keyPressed(KeyEvent keyEvent){
         if (keyEvent.getKeyCode()== KeyEvent.VK_A ){
             isAPressed=true;
@@ -27,6 +29,10 @@ public class Inputmaneger {
         if (keyEvent.getKeyCode()==KeyEvent.VK_ENTER){
             isENTERPressed=true;
         }
+
+
+    }
+    public void MouseMotionListener(MouseMotionListener mouseMotionListener){
 
 
     }

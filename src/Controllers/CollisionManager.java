@@ -35,7 +35,6 @@ public class CollisionManager {
         colliders.add(collider);
     }
     public void remove (Collider collider){
-
         colliders.remove(collider);
 
     }

@@ -19,7 +19,7 @@ public class Startscene implements GameScene {
 
 
     public Startscene() {
-        background = new Background("res/sea.png");
+        background = new Background("res/1945-logo.jpg",false);
         try {
             start = ImageIO.read(new File("res/startbutton.png"));
 
@@ -47,7 +47,8 @@ public class Startscene implements GameScene {
     @Override
     public void draw(Graphics graphics) {
         background.draw(graphics);
-        graphics.drawImage(start,180,500,null);
+        graphics.drawImage(start,180,600,null);
+
     }
 
     @Override

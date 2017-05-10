@@ -16,6 +16,8 @@ public class BulletController  extends Controller implements Collider
 {
 
     private  int damege = 1;
+    private boolean isbulletright;
+    private boolean isbulletleft;
 
 
     public BulletController(int x, int y, Image image) {
@@ -26,6 +28,27 @@ public class BulletController  extends Controller implements Collider
         CollisionManager.instance.add(this);
 
     }
+    public BulletController(int x, int y, Image image,boolean isbulletright) {
+        int rectX = x- image.getWidth(null)/2;
+        int rectY = y- image.getHeight(null);
+        this.gameRect= new GameRect(rectX,rectY,image.getWidth(null),image.getHeight(null));
+        this.imageRenderer = new ImageRenderer(image);
+        this.isbulletright = isbulletright;
+        CollisionManager.instance.add(this);
+
+
+    }
+    public BulletController(int x, int y, Image image,boolean isbulletleft,boolean isbulletright) {
+        int rectX = x- image.getWidth(null)/2;
+        int rectY = y- image.getHeight(null);
+        this.gameRect= new GameRect(rectX,rectY,image.getWidth(null),image.getHeight(null));
+        this.imageRenderer = new ImageRenderer(image);
+        this.isbulletleft = isbulletleft;
+        CollisionManager.instance.add(this);
+
+
+    }
+
     @Override
     public void Shot(){
     }
@@ -35,7 +58,20 @@ public class BulletController  extends Controller implements Collider
 
 
     public  void update(){
-        gameRect.move(0,-15);
+        if (isbulletleft){
+            gameRect.move(-5,-15);
+        }else {
+            if (isbulletright){
+                gameRect.move(+5,-15);
+            }else {
+                gameRect.move(0,-15);
+            }
+        }
+
+
+        if (gameRect.getY()<=0){
+            getGameRect().setDead(true);
+        }
     }
 
 

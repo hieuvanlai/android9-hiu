@@ -23,6 +23,6 @@ public class ImageRenderer {
     }
 
     public void render(Graphics graphics, GameRect gameRect){
-        graphics.drawImage(image,gameRect.getX(),gameRect.getY(),gameRect.getWidth(),gameRect.getHeight(),null);
+        graphics.drawImage(image,gameRect.getX(),gameRect.getY(),image.getWidth(null),image.getHeight(null),null);
     }
 }
