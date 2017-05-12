@@ -37,16 +37,13 @@ import java.util.ArrayList;
     public void onCollider(Collider other) {
 
     }
-//    @Override
-//    public void draw(Graphics graphics){
-//        AffineTransform at =  AffineTransform.getTranslateInstance(gameRect.getX(),gameRect.getY());
-//        at.rotate(Math.toRadians(0));
-//        Graphics2D graphics2D = (Graphics2D) graphics;
-//        graphics2D.drawImage(imageRenderer.getImage(),at,null);
-//
-//
-//
-//    }
+    @Override
+    public void draw(Graphics graphics){
+        graphics.drawImage(Utils.xoayanh(Utils.loadImage("res/Untitled-5.png")),gameRect.getX(),gameRect.getY(),null);
+
+
+
+    }
     public void  GetHit(int damage){
         gameRect.setHit(getGameRect().getHit()-damage);
 

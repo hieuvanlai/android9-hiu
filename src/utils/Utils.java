@@ -3,6 +3,9 @@ package utils;
 import javax.imageio.ImageIO;
 import javax.sound.sampled.*;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
@@ -20,6 +23,21 @@ public class Utils {
         }
         return null;
 
+    }
+    public static  Image  xoayanh(Image image){
+        // Flip the image vertically
+        AffineTransform tx = AffineTransform.getScaleInstance(1, -1);
+        tx.translate(0, -image.getHeight(null));
+        AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+        image = op.filter((BufferedImage) image, null);
+
+
+// Flip the image vertically and horizontally; equivalent to rotating the image 180 degrees
+        tx = AffineTransform.getScaleInstance(-1, -1);
+        tx.translate(-image.getWidth(null), -image.getHeight(null));
+        op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+        image = op.filter((BufferedImage) image, null);
+        return image;
     }
     public  static Random random = new Random();
 
